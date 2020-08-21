@@ -18,55 +18,55 @@ const randomPartition = [
   "P10",
 ];
 
-setInterval(async () => {
-  try {
-    const Records = [];
-    for (let i = 0; i < 10; i++) {
-      const data = await generateNotesItem();
-      Records.push({
-        Data:
-          Buffer.from(JSON.stringify(data)) ||
-          "STRING_VALUE" /* required */ /* Strings will be Base-64 encoded on your behalf */,
-        PartitionKey:
-          randomPartition[
-            Math.floor(Math.random() * randomPartition.length)
-          ] /* required */,
-      });
-    }
-    console.log(Records);
-
-    const params = {
-      Records,
-      StreamName: "DS1" /* required */,
-    };
-    const response = await kinesis.putRecords(params).promise();
-
-    console.log("Records:", Records);
-    console.log("Response:", response);
-    console.log();
-  } catch (err) {
-    throw err;
-  }
-}, 1);
-
 // setInterval(async () => {
 //   try {
-//     const data = await generateNotesItem();
+//     const Records = [];
+//     for (let i = 0; i < 10; i++) {
+//       const data = await generateNotesItem();
+//       Records.push({
+//         Data:
+//           Buffer.from(JSON.stringify(data)) ||
+//           "STRING_VALUE" /* required */ /* Strings will be Base-64 encoded on your behalf */,
+//         PartitionKey:
+//           randomPartition[
+//             Math.floor(Math.random() * randomPartition.length)
+//           ] /* required */,
+//       });
+//     }
+//     console.log(Records);
+
 //     const params = {
-//       Data:
-//         Buffer.from(JSON.stringify(data)) ||
-//         "STRING_VALUE" /* required */ /* Strings will be Base-64 encoded on your behalf */,
-//       PartitionKey: "P1" /* required */,
+//       Records,
 //       StreamName: "DS1" /* required */,
 //     };
-//     const response = await kinesis.putRecord(params).promise();
-//     console.log("Data:", data);
+//     const response = await kinesis.putRecords(params).promise();
+
+//     console.log("Records:", Records);
 //     console.log("Response:", response);
 //     console.log();
 //   } catch (err) {
 //     throw err;
 //   }
-// }, 100);
+// }, 1);
+
+setInterval(async () => {
+  try {
+    const data = await generateNotesItem();
+    const params = {
+      Data:
+        Buffer.from(JSON.stringify(data)) ||
+        "STRING_VALUE" /* required */ /* Strings will be Base-64 encoded on your behalf */,
+      PartitionKey: "P1" /* required */,
+      StreamName: "DS2" /* required */,
+    };
+    const response = await kinesis.putRecord(params).promise();
+    console.log("Data:", data);
+    console.log("Response:", response);
+    console.log();
+  } catch (err) {
+    throw err;
+  }
+}, 1000);
 
 generateNotesItem = async () => {
   return {
